@@ -229,17 +229,30 @@ class VoiceGenerateView(APIView):
         ctime=str(int(time.time()))
         start = datetime.datetime.now()
         print(start)
+        # obsClient = ObsClient(
+        #                 access_key_id='ILH9LF6DUM0V7TACBI7P',  # 刚刚下载csv文件里面的Access Key Id
+        #                 # 刚刚下载csv文件里面的Secret Access Key
+        #                 secret_access_key='94SpA5u79LsnXOajCBR52NfWn2K1bUakYGwcqMdt',
+        #                 server='https://obs.cn-southwest-2.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
+        #             )
         obsClient = ObsClient(
-                        access_key_id='ILH9LF6DUM0V7TACBI7P',  # 刚刚下载csv文件里面的Access Key Id
-                        # 刚刚下载csv文件里面的Secret Access Key
-                        secret_access_key='94SpA5u79LsnXOajCBR52NfWn2K1bUakYGwcqMdt',
-                        server='https://obs.cn-southwest-2.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
-                    )
+            access_key_id='PX91I6UXKYUFOTKE8BFK',  # 刚刚下载csv文件里面的Access Key Id 
+
+            # 刚刚下载csv文件里面的Secret Access Key 
+            secret_access_key='XoA4NB2b56ehNbaPkM31mCB5B6DlbK9TisA3mxG5',
+            	
+            # 
+            server='https://obs.cn-north-4.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
+        )
+
+
+
+
         # 使用访问OBS
         # 调用putFile接口上传对象到桶内
         print(datetime)
-        resp = obsClient.putFile('zhongsheng', 'wav/'+request.user.username+'/'+ctime+'.'+ext, file_path=out_path)
-        path = 'http://wwa.chuanyuefengxinzi.xyz' + '/wav/' +request.user.username+'/'+ctime+'.'+ext
+        resp = obsClient.putFile('crowdofvoice', 'wav/'+request.user.username+'/'+ctime+'.'+ext, file_path=out_path)
+        path = 'http://obs.crowdofvoice.top/' + 'wav/' +request.user.username+'/'+ctime+'.'+ext
         print(path)
         print(resp.status)
         if resp.status < 300:
@@ -351,17 +364,27 @@ class Usersound(ViewSet):
                 print(" > Saving output to {}".format(out_path))
                 synthesizer.save_wav(wav, out_path)
 
+                # obsClient = ObsClient(
+                #     access_key_id='ILH9LF6DUM0V7TACBI7P',  # 刚刚下载csv文件里面的Access Key Id
+                #     # 刚刚下载csv文件里面的Secret Access Key
+                #     secret_access_key='94SpA5u79LsnXOajCBR52NfWn2K1bUakYGwcqMdt',
+                #     server='https://obs.cn-southwest-2.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
+                # )
                 obsClient = ObsClient(
-                    access_key_id='ILH9LF6DUM0V7TACBI7P',  # 刚刚下载csv文件里面的Access Key Id
-                    # 刚刚下载csv文件里面的Secret Access Key
-                    secret_access_key='94SpA5u79LsnXOajCBR52NfWn2K1bUakYGwcqMdt',
-                    server='https://obs.cn-southwest-2.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
+                    access_key_id='PX91I6UXKYUFOTKE8BFK',  # 刚刚下载csv文件里面的Access Key Id 
+
+                    # 刚刚下载csv文件里面的Secret Access Key 
+                    secret_access_key='XoA4NB2b56ehNbaPkM31mCB5B6DlbK9TisA3mxG5',
+                        
+                    # 
+                    server='https://obs.cn-north-4.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
                 )
+
                 # 使用访问OBS
                 # 调用putFile接口上传对象到桶内
                 print(datetime)
                 resp = obsClient.putFile('zhongsheng', 'wav/' + filename, file_path=out_path)
-                path = 'http://wwa.chuanyuefengxinzi.xyz' + '/wav/' + filename
+                path = 'http://obs.crowdofvoice.top/' + 'wav/' + filename
                 print(path)
                 print(resp.status)
                 if resp.status < 300:

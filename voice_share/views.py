@@ -116,14 +116,23 @@ class VoiceShare(APIView):
         ext = old_obs_url.split('.')[-1]
         # print(ext)
 
-        obsClient = ObsClient(
-            access_key_id='ILH9LF6DUM0V7TACBI7P',  # 刚刚下载csv文件里面的Access Key Id PX91I6UXKYUFOTKE8BFK
+        # obsClient = ObsClient(
+        #     access_key_id='ILH9LF6DUM0V7TACBI7P',  # 刚刚下载csv文件里面的Access Key Id PX91I6UXKYUFOTKE8BFK
 
-            # 刚刚下载csv文件里面的Secret Access Key XoA4NB2b56ehNbaPkM31mCB5B6DlbK9TisA3mxG5
-            secret_access_key='94SpA5u79LsnXOajCBR52NfWn2K1bUakYGwcqMdt',
+        #     # 刚刚下载csv文件里面的Secret Access Key XoA4NB2b56ehNbaPkM31mCB5B6DlbK9TisA3mxG5
+        #     secret_access_key='94SpA5u79LsnXOajCBR52NfWn2K1bUakYGwcqMdt',
             	
-            # https://obs.cn-north-4.myhuaweicloud.com
-            server='https://obs.cn-southwest-2.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
+        #     # https://obs.cn-north-4.myhuaweicloud.com
+        #     server='https://obs.cn-southwest-2.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
+        # )
+        obsClient = ObsClient(
+            access_key_id='PX91I6UXKYUFOTKE8BFK',  # 刚刚下载csv文件里面的Access Key Id 
+
+            # 刚刚下载csv文件里面的Secret Access Key 
+            secret_access_key='XoA4NB2b56ehNbaPkM31mCB5B6DlbK9TisA3mxG5',
+            	
+            # 
+            server='https://obs.cn-north-4.myhuaweicloud.com'  # 这里的访问域名就是我们在桶的基本信息那里记下的东西
         )
 
 
@@ -134,10 +143,10 @@ class VoiceShare(APIView):
             os.makedirs(temp_path)
         #暂存音频下载到本地
         try:
-            # http://crowdofvoice.obs.cn-north-4.myhuaweicloud.com
-            resp = obsClient.getObject(bucketName="zhongsheng",
-                                             objectKey=old_obs_url.split("http://wwa.chuanyuefengxinzi.xyz/")[1],
-                                             downloadPath=temp_path + old_obs_url.split("http://wwa.chuanyuefengxinzi.xyz/")[1])
+            # http://crowdofvoice.obs.cn-north-4.myhuaweicloud.com/
+            resp = obsClient.getObject(bucketName="crowdofvoice",
+                                             objectKey=old_obs_url.split("http://obs.crowdofvoice.top/")[1],
+                                             downloadPath=temp_path + old_obs_url.split("http://obs.crowdofvoice.top/")[1])
             if resp.status < 300:
                 print('requestId:', resp.requestId)
                 print('url:', resp.body.url)
@@ -151,7 +160,7 @@ class VoiceShare(APIView):
         key_path = 'shared_wav/' + request.user.username + '/' + ctime + '.' + ext
         print(key_path)
         #暂存到本地的音频上传到永久obs桶
-        resp_new = obsClient.putFile(bucketName = "zhongsheng", objectKey = key_path, file_path = temp_path + old_obs_url.split("http://wwa.chuanyuefengxinzi.xyz/")[1])
+        resp_new = obsClient.putFile(bucketName = "crowdofvoice", objectKey = key_path, file_path = temp_path + old_obs_url.split("http://obs.crowdofvoice.top/")[1])
         if resp_new.status < 300:
             # 输出请求Id
             print('requestId:', resp_new.requestId)
@@ -167,14 +176,14 @@ class VoiceShare(APIView):
 
         #删除本地的暂存音频
         try:
-            os.remove(temp_path + old_obs_url.split("http://wwa.chuanyuefengxinzi.xyz/")[1])
+            os.remove(temp_path + old_obs_url.split("http://obs.crowdofvoice.top/")[1])
         except FileNotFoundError as e:
             print(f'File not found: {e.filename}')
 
-        article.shared_voice_url = 'http://wwa.chuanyuefengxinzi.xyz/' + key_path
+        article.shared_voice_url = 'http://obs.crowdofvoice.top/' + key_path
         article.save()
         return Response({
             'status': 201,
             'msg': '发布成功',
-            "data": 'http://wwa.chuanyuefengxinzi.xyz/' + key_path
+            "data": 'http://obs.crowdofvoice.top/' + key_path
         })

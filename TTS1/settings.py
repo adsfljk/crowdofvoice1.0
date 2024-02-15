@@ -57,6 +57,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'crowd',
+#         'USER': 'root',
+#         'PASSWORD': 'zaqQ!@21',
+#         'HOST': '47.109.88.233',
+#         'post': '3306'
+#     }
+# }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

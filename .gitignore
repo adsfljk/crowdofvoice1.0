@@ -18,3 +18,5 @@ bin-release/
 # information for Eclipse / Flash Builder.
 media/*
 yourtts-pth-0515/*
+wave/*
+files/*
