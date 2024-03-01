@@ -383,7 +383,7 @@ class Usersound(ViewSet):
                 # 使用访问OBS
                 # 调用putFile接口上传对象到桶内
                 print(datetime)
-                resp = obsClient.putFile('zhongsheng', 'wav/' + filename, file_path=out_path)
+                resp = obsClient.putFile('crowdofvoice', 'wav/' + filename, file_path=out_path)
                 path = 'http://obs.crowdofvoice.top/' + 'wav/' + filename
                 print(path)
                 print(resp.status)
